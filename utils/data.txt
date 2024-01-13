@@ -1,0 +1,16 @@
+1 - 2014 - 2020
+2 - 2000 - 2022 ***
+3 - 2014 - 2020
+4 - 2010 - 2023
+5 - 2010 - 2023
+6 - 2014 - 2023
+
+
+--------
+godina, region, ukupno turista, ukupno stranih turista, // 4
+procenat domacinstava koja imaju internet, procenat preduzeca koja imaju veb sajt, // 2
+
+bez obrazovanja, srednje obrazovanje, visoko obrazovanje   // ukupno i nezaposleni 2*3
+musko, zensko // ukupno i nezaposleni 2*2
+
+// ukupno i nezaposleni po starosnim grupama 7*2
