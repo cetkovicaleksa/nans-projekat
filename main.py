@@ -5,7 +5,7 @@ csv_file_path2 = 'data/Домаћинства која поседују широ
 csv_file_path3 = 'data/Предузећа која имају веб сајт, по регионима.csv'
 csv_file_path4 = 'data/Укупно становништво према радној активности, образовању и региону..csv'
 csv_file_path5 = 'data/Укупно становништво према радној активности, полу и региону. Годишњи.csv'
-csv_file_path6 = 'data/Укупно становништво према радној активности, старости и региону..csv'
+csv_file_path6 = 'data/Укупно становништво према радној активности, старости и региону.csv'
 
 output_csv_file_path = 'data/main-table.csv'
 
@@ -18,7 +18,7 @@ with open(csv_file_path1, 'r', newline='', encoding='utf-8') as file1, \
         open(output_csv_file_path, 'w', newline='', encoding='utf-8') as output_file:
     csv_reader = csv.reader(file1, delimiter=';')
 
-    csv_writer = csv.writer(output_file, delimiter=';')
+    csv_writer = csv.writer(output_file, delimiter=',') 
 
     header = next(csv_reader)
 
