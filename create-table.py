@@ -296,16 +296,6 @@ with open(csv_file_path1, 'r', newline='', encoding='utf-8') as file1, \
                         if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
                             result_mass[i].append(str(float(row[9]) * 1000))
 
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "65") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            try:
-                                result_mass[i].append(str(float(row[9]) * 1000))
-                            except ValueError:
-                                result_mass[i].append(None)
 
     for i, x in enumerate(result_mass):
         if int(x[1]) < 2014:
@@ -324,10 +314,9 @@ with open(csv_file_path1, 'r', newline='', encoding='utf-8') as file1, \
             result_mass[i].append(None)
             result_mass[i].append(None)
             result_mass[i].append(None)
-            result_mass[i].append(None)
 
     result_mass.insert(0,
-                       ["Region", "Year", "TotalTourists", "ForeignTourists%", "CompaniesWithWebSites%",
+                       ["Region", "Year", "TotalTourists", "ForeignTourists", "HousesWithInternet%", "CompaniesWithWebSites%",
                         "AmountOfPeopleWithHighEducation", "PeopleWithHighEducationWithoutJob",
                         "AmountOfPeopleWithSecondaryEducation", "PeopleWithSecondaryEducationWithoutJob",
                         "AmountOfPeopleWithoutEducation", "PeopleWithoutEducationWithoutJob",
@@ -338,7 +327,6 @@ with open(csv_file_path1, 'r', newline='', encoding='utf-8') as file1, \
                         "AmountOf_25-34_PeopleInRegionWithoutJob", "AmountOf_35-44_PeopleInRegion",
                         "AmountOf_35-44_PeopleInRegionWithoutJob", "AmountOf_45-54_PeopleInRegion",
                         "AmountOf_45-54_PeopleInRegionWithoutJob", "AmountOf_55-64_PeopleInRegion",
-                        "AmountOf_55-64_PeopleInRegionWithoutJob", "AmountOf_65+_PeopleInRegion",
-                        "AmountOf_65+_PeopleInRegionWithoutJob",])
+                        "AmountOf_55-64_PeopleInRegionWithoutJob", "AmountOf_65+_PeopleInRegion"])
     csv_writer.writerows(result_mass)
     print(result_mass)
