@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 df = pd.read_csv('data/main-table.csv')
@@ -15,39 +16,38 @@ columns_to_analyze = ["AmountOfPeopleWithHighEducation", "PeopleWithHighEducatio
                         "AmountOf_45-54_PeopleInRegionWithoutJob", "AmountOf_55-64_PeopleInRegion",
                         "AmountOf_55-64_PeopleInRegionWithoutJob", "AmountOf_65+_PeopleInRegion"]
 
-regions = df['Region'].unique()
-
-# Рассчитываем процентный рост для каждой колонки внутри каждого региона
-for column in columns_to_analyze:
-    df[column + '_Growth'] = df.groupby('Region')[column].transform(lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100)
-
-# Применяем отрицательную экстраполяцию для каждой колонки
-for column in columns_to_analyze:
-    growth_column = column + '_Growth'
-    df[column] = df.apply(lambda row: row[column] * (1 + row[growth_column] / 100) if pd.notna(row[growth_column]) else row[column], axis=1)
-
-# Удаляем временные столбцы с процентным ростом
-df = df.drop(columns=[column + '_Growth' for column in columns_to_analyze])
-
-# Сохраняем обновленные данные в новый CSV-файл
-df.to_csv('extrapolated_data_by_region.csv', index=False)
-
-# grouped_dfs = df.groupby('Region')
-# region_dfs = []
-# for region in regions:
-#     if region in grouped_dfs.groups:
-#         region_dfs.append(grouped_dfs.get_group(region))
-# print(region_dfs)
+# regions = df['Region'].unique()
 #
-# interpolated_dfs = []
+# # Рассчитываем процентный рост для каждой колонки внутри каждого региона
+# for column in columns_to_analyze:
+#     df[column + '_Growth'] = df.groupby('Region')[column].transform(lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100)
 #
+# # Применяем отрицательную экстраполяцию для каждой колонки
+# for column in columns_to_analyze:
+#     growth_column = column + '_Growth'
+#     df[column] = df.apply(lambda row: row[column] * (1 + row[growth_column] / 100) if pd.notna(row[growth_column]) else row[column], axis=1)
 #
-# for region_df in region_dfs:
-#     interpolated_df = region_df.drop('Region',axis=1).interpolate(method='linear', limit_direction='forward', axis=0)
-#     interpolated_dfs.append(pd.concat([region_df['Region'], interpolated_df], axis=1))
-#     interpolated_dfs.append(interpolated_df)
+# # Удаляем временные столбцы с процентным ростом
+# df = df.drop(columns=[column + '_Growth' for column in columns_to_analyze])
 #
-# print(interpolated_dfs)
+# # Сохраняем обновленные данные в новый CSV-файл
+# df.to_csv('extrapolated_data_by_region.csv', index=False)
+
+grouped_dfs = df.groupby('Region')
+region_dfs = []
+for region in regions:
+    if region in grouped_dfs.groups:
+        region_dfs.append(grouped_dfs.get_group(region))
+print(region_dfs)
+
+interpolated_dfs = []
+
+for region_df in region_dfs:
+    interpolated_df = region_df.drop('Region', axis=1).interpolate(method='quadratic', limit_direction='forward', axis=0).ffill().bfill()
+    interpolated_dfs.append(pd.concat([region_df['Region'], interpolated_df], axis=1))
+    # interpolated_dfs.append(interpolated_df)
+
+print(interpolated_dfs)
 
 # .interpolate(method='linear', limit_direction='forward', axis=0)
 # df['Region'] = pd.Categorical(df['Region'])
