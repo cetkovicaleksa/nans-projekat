@@ -1,334 +1,10 @@
-import csv
+import numpy as np
+import pandas as pd
 
-csv_file_path1 = 'data/Доласци туриста - годишњи подаци.csv'
-csv_file_path2 = 'data/Домаћинства која поседују широкопојасну интернет конекцију, по.csv'
-csv_file_path3 = 'data/Предузећа која имају веб сајт, по регионима.csv'
-csv_file_path4 = 'data/Укупно становништво према радној активности, образовању и региону..csv'
-csv_file_path5 = 'data/Укупно становништво према радној активности, полу и региону. Годишњи.csv'
-csv_file_path6 = 'data/Укупно становништво према радној активности, старости и региону.csv'
-
-output_csv_file_path = 'data/main-table.csv'
-
-with open(csv_file_path1, 'r', newline='', encoding='utf-8') as file1, \
-        open(csv_file_path2, 'r', newline='', encoding='utf-8') as file2, \
-        open(csv_file_path3, 'r', newline='', encoding='utf-8') as file3, \
-        open(csv_file_path4, 'r', newline='', encoding='utf-8') as file4, \
-        open(csv_file_path5, 'r', newline='', encoding='utf-8') as file5, \
-        open(csv_file_path6, 'r', newline='', encoding='utf-8') as file6, \
-        open(output_csv_file_path, 'w', newline='', encoding='utf-8') as output_file:
-    csv_reader = csv.reader(file1, delimiter=';')
-
-    csv_writer = csv.writer(output_file, delimiter=',') 
-
-    header = next(csv_reader)
-
-    # csv_writer.writerow(['Region', 'Year', 'TotalTourists','ForeignTourists'])
-    regions = ["Београдски регион", "Регион Војводине", "РЕПУБЛИКА СРБИЈА", "Регион Шумадије и Западне Србије",
-               "Регион Јужне и Источне Србије"]
-    result_mass = []
-    edited_row = []
-    for row in csv_reader:
-        if (int(row[8]) >= 2010) and (int(row[8]) <= 2020):
-            if row[5] == "1":
-                if row[2] in regions:
-                    if row[3] == "0":
-                        edited_row.append(row[2])
-                        edited_row.append(row[8])
-                        edited_row.append(row[9])
-                    if row[3] == "2":
-                        edited_row.append(row[9])
-                        result_mass.append(edited_row)
-                        edited_row = []
-
-    csv_reader = csv.reader(file2, delimiter=';')
-
-    header = next(csv_reader)
-
-    for row in csv_reader:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[2] in regions:
-                for i, x in enumerate(result_mass):
-                    if (x[0] == row[2]) and (int(x[1]) == int(row[4])):
-                        result_mass[i].append(row[5])
-
-    csv_reader = csv.reader(file3, delimiter=';')
-
-    header = next(csv_reader)
-
-    for row in csv_reader:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[2] in regions:
-                for i, x in enumerate(result_mass):
-                    if (x[0] == row[2]) and (int(x[1]) == int(row[4])):
-                        result_mass[i].append(row[5])
-
-    csv_reader = csv.reader(file4, delimiter=';')
-
-    header = next(csv_reader)
-
-    data = list(csv_reader)
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "4") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "4") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "3") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "3") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "2") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "2") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-    for i, x in enumerate(result_mass):
-        if int(x[1]) < 2014:
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-
-    csv_reader = csv.reader(file5, delimiter=';')
-
-    header = next(csv_reader)
-
-    data = list(csv_reader)
-
-    ####### pol. Mus, zen
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "1") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "1") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "2") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "2") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for i, x in enumerate(result_mass):
-        if int(x[1]) < 2014:
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-
-    csv_reader = csv.reader(file6, delimiter=';')
-
-    header = next(csv_reader)
-
-    data = list(csv_reader)
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "0") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "0") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "15-24") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "15-24") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "15-64") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "15-64") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "25-34") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "25-34") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "35-44") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "35-44") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "45-54") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "45-54") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "55-64") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "55-64") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "65") and (row[2] == "Укупно"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            result_mass[i].append(str(float(row[9]) * 1000))
-
-    for row in data:
-        if (int(row[4]) >= 2010) and (int(row[4]) <= 2020):
-            if row[8] in regions:
-                if (row[5] == "65") and (row[2] == "Незапослена лица"):
-                    for i, x in enumerate(result_mass):
-                        if (x[0] == row[8]) and (int(x[1]) == int(row[4])):
-                            try:
-                                result_mass[i].append(str(float(row[9]) * 1000))
-                            except ValueError:
-                                result_mass[i].append(None)
-
-    for i, x in enumerate(result_mass):
-        if int(x[1]) < 2014:
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-            result_mass[i].append(None)
-
-    result_mass.insert(0,
-                       ["Region", "Year", "TotalTourists", "ForeignTourists%", "CompaniesWithWebSites%",
-                        "AmountOfPeopleWithHighEducation", "PeopleWithHighEducationWithoutJob",
+df = pd.read_csv('data/main-table.csv')
+regions = ['РЕПУБЛИКА СРБИЈА', 'Београдски регион', 'Регион Војводине',
+           'Регион Шумадије и Западне Србије', 'Регион Јужне и Источне Србије']
+columns_to_analyze = ["AmountOfPeopleWithHighEducation", "PeopleWithHighEducationWithoutJob",
                         "AmountOfPeopleWithSecondaryEducation", "PeopleWithSecondaryEducationWithoutJob",
                         "AmountOfPeopleWithoutEducation", "PeopleWithoutEducationWithoutJob",
                         "AmountOfMales", "AmountOfMalesWithoutJob", "AmountOfFemales", "AmountOfFemalesWithoutJob",
@@ -338,7 +14,56 @@ with open(csv_file_path1, 'r', newline='', encoding='utf-8') as file1, \
                         "AmountOf_25-34_PeopleInRegionWithoutJob", "AmountOf_35-44_PeopleInRegion",
                         "AmountOf_35-44_PeopleInRegionWithoutJob", "AmountOf_45-54_PeopleInRegion",
                         "AmountOf_45-54_PeopleInRegionWithoutJob", "AmountOf_55-64_PeopleInRegion",
-                        "AmountOf_55-64_PeopleInRegionWithoutJob", "AmountOf_65+_PeopleInRegion",
-                        "AmountOf_65+_PeopleInRegionWithoutJob",])
-    csv_writer.writerows(result_mass)
-    print(result_mass)
+                        "AmountOf_55-64_PeopleInRegionWithoutJob", "AmountOf_65+_PeopleInRegion"]
+
+# regions = df['Region'].unique()
+#
+# # Рассчитываем процентный рост для каждой колонки внутри каждого региона
+# for column in columns_to_analyze:
+#     df[column + '_Growth'] = df.groupby('Region')[column].transform(lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100)
+#
+# # Применяем отрицательную экстраполяцию для каждой колонки
+# for column in columns_to_analyze:
+#     growth_column = column + '_Growth'
+#     df[column] = df.apply(lambda row: row[column] * (1 + row[growth_column] / 100) if pd.notna(row[growth_column]) else row[column], axis=1)
+#
+# # Удаляем временные столбцы с процентным ростом
+# df = df.drop(columns=[column + '_Growth' for column in columns_to_analyze])
+#
+# # Сохраняем обновленные данные в новый CSV-файл
+# df.to_csv('extrapolated_data_by_region.csv', index=False)
+
+grouped_dfs = df.groupby('Region')
+region_dfs = []
+for region in regions:
+    if region in grouped_dfs.groups:
+        region_dfs.append(grouped_dfs.get_group(region))
+print(region_dfs)
+
+interpolated_dfs = []
+
+for region_df in region_dfs:
+    interpolated_df = region_df.drop('Region', axis=1).interpolate(method='quadratic', limit_direction='forward', axis=0).ffill().bfill()
+    interpolated_dfs.append(pd.concat([region_df['Region'], interpolated_df], axis=1))
+    # interpolated_dfs.append(interpolated_df)
+
+print(interpolated_dfs)
+
+# .interpolate(method='linear', limit_direction='forward', axis=0)
+# df['Region'] = pd.Categorical(df['Region'])
+# #
+# # Затим, груписање по региону и рачунање суме за сваки регион
+# print(df['Region'].unique())
+# grouped_dfs = df.groupby('Region')
+# print(df['Region'].unique())
+# # Исписивање груписаних података
+# print(grouped_dfs.get_group('Регион Војводине'))
+# # grouped_dfs = df.groupby('Region')
+# # grouped_dfs.first()
+# # grouped_dfs.get_group(regions[0])
+# # region_dfs = []
+# # for region in regions:
+# #     if region in grouped_dfs.groups:
+# #         region_dfs.append(grouped_dfs.get_group(region))
+# # # Рассчитываем процентный рост для каждой колонки
+# # print(region_dfs)
