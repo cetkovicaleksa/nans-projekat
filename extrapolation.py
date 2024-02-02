@@ -1,53 +1,34 @@
-import numpy as np
 import pandas as pd
 
 df = pd.read_csv('data/main-table.csv')
-regions = ['РЕПУБЛИКА СРБИЈА', 'Београдски регион', 'Регион Војводине',
-           'Регион Шумадије и Западне Србије', 'Регион Јужне и Источне Србије']
-columns_to_analyze = ["AmountOfPeopleWithHighEducation", "PeopleWithHighEducationWithoutJob",
-                        "AmountOfPeopleWithSecondaryEducation", "PeopleWithSecondaryEducationWithoutJob",
-                        "AmountOfPeopleWithoutEducation", "PeopleWithoutEducationWithoutJob",
-                        "AmountOfMales", "AmountOfMalesWithoutJob", "AmountOfFemales", "AmountOfFemalesWithoutJob",
-                        "AmountOfPeopleInRegion", "AmountOfPeopleInRegionWithoutJob", "AmountOf_15-24_PeopleInRegion",
-                        "AmountOf_15-24_PeopleInRegionWithoutJob", "AmountOf_15-64_PeopleInRegion",
-                        "AmountOf_15-64_PeopleInRegionWithoutJob", "AmountOf_25-34_PeopleInRegion",
-                        "AmountOf_25-34_PeopleInRegionWithoutJob", "AmountOf_35-44_PeopleInRegion",
-                        "AmountOf_35-44_PeopleInRegionWithoutJob", "AmountOf_45-54_PeopleInRegion",
-                        "AmountOf_45-54_PeopleInRegionWithoutJob", "AmountOf_55-64_PeopleInRegion",
-                        "AmountOf_55-64_PeopleInRegionWithoutJob", "AmountOf_65+_PeopleInRegion"]
-import pandas as pd
+df_ind = df[
+            ['Region', 'Year', 'TotalTourists', 'ForeignTourists', 'HousesWithInternet%', 'CompaniesWithWebSites%']]
+df_without_ind = df.drop(columns=['Region', 'Year', 'TotalTourists', 'ForeignTourists', 'HousesWithInternet%',
+                                          'CompaniesWithWebSites%'])
+for i in range(20):
+    df_without_ind.iloc[19 - i] = df_without_ind.iloc[24 - i] - (df_without_ind.iloc[29 - i] - df_without_ind.iloc[24 - i])
 
-def fill_missing_values(column):
-    column = column.copy()  # Создаем явную копию столбца
-    for i in range(1, len(column) - 1):
-        if pd.isna(column.iloc[i]):
-            column.iloc[i] = column.iloc[i-1] - (column.iloc[i+1] - column.iloc[i-1])
-    return column
+result_df = pd.merge(df_ind, df_without_ind, left_index=True, right_index=True)
 
-# Ваш код для чтения данных
-df = pd.read_csv('data/main-table.csv')
+print(result_df)
 
-grouped_dfs = df.groupby('Region')
-region_dfs = []
-for region in regions:
-    if region in grouped_dfs.groups:
-        region_dfs.append(grouped_dfs.get_group(region))
-print(region_dfs)
+result_df.to_csv('data/extrapolated_data.csv', index=False)
+# print(region_dfs)
+# print(df.iloc[15])
 
-# Заполняем пропущенные значения согласно вашей формуле
-for col in columns_to_analyze:
-    for region_df in region_dfs:
-        region_df[col] = region_df[col].apply(fill_missing_values)
-
-# Создаем новый DataFrame с интерполированными значениями
-interpolated_dfs = []
-for region_df in region_dfs:
-    interpolated_df = region_df.drop('Region', axis=1).interpolate(method='linear', limit_direction='forward', axis=0).ffill().bfill()
-    interpolated_dfs.append(pd.concat([region_df['Region'], interpolated_df], axis=1))
+# for col in columns_to_analyze:
+#     for region_df in region_dfs:
+#         region_df[col] = region_df[col].apply(fill_missing_values)
+#
+# # Создаем новый DataFrame с интерполированными значениями
+# interpolated_dfs = []
+# for region_df in region_dfs:
+#     interpolated_df = region_df.drop('Region', axis=1).interpolate(method='linear', limit_direction='forward', axis=0).ffill().bfill()
+#     interpolated_dfs.append(pd.concat([region_df['Region'], interpolated_df], axis=1))
 
 # Сохраняем результат в новый CSV-файл
-result_df = pd.concat(interpolated_dfs)
-result_df.to_csv('data/interpolated_data.csv', index=False)
+# result_df = pd.concat(interpolated_dfs)
+# result_df.to_csv('data/interpolated_data1.csv', index=False)
 
 #
 # interpolated_dfs = []
