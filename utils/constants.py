@@ -1,6 +1,5 @@
-
-DATA_FILE = 'nans-projekat\data\main-table.csv'
-EXTRAPOLATED_DATA_FILE = 'nans-projekat\data\extrapolated_data.csv'
+DATA_FILE = 'data\main-table.csv'
+EXTRAPOLATED_DATA_FILE = 'data\extrapolated_data.csv'
 
 COLS = (
     'Region', 'Year', 'TotalTourists', 'ForeignTourists', 'HousesWithInternet%',
