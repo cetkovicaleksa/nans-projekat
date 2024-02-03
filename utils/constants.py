@@ -1,7 +1,8 @@
 
-DATA_FILE = 'data\main-table.csv'
+DATA_FILE = 'nans-projekat\data\main-table.csv'
+EXTRAPOLATED_DATA_FILE = 'nans-projekat\data\extrapolated_data.csv'
 
-COLS = {
+COLS = (
     'Region', 'Year', 'TotalTourists', 'ForeignTourists', 'HousesWithInternet%',
     'CompaniesWithWebSites%', 'AmountOfPeopleWithHighEducation',
     'PeopleWithHighEducationWithoutJob', 'AmountOfPeopleWithSecondaryEducation',
@@ -16,26 +17,18 @@ COLS = {
     'AmountOf_35-44_PeopleInRegionWithoutJob', 'AmountOf_45-54_PeopleInRegion',
     'AmountOf_45-54_PeopleInRegionWithoutJob', 'AmountOf_55-64_PeopleInRegion',
     'AmountOf_55-64_PeopleInRegionWithoutJob', 'AmountOf_65+_PeopleInRegion'
-}
+)
 
 DEPENDENT_COL = 'TotalTourists'
 
 INDEX_COLS = 'Region', 'Year'
 
-INDEPENDENT_COLS = COLS - set(INDEX_COLS) - {DEPENDENT_COL}
+INDEPENDENT_COLS = tuple( set(COLS) - set(INDEX_COLS) - {DEPENDENT_COL} )
 
-REGIONS = { 
+REGIONS = ( 
     'РЕПУБЛИКА СРБИЈА',
     'Београдски регион', 
     'Регион Војводине', 
     'Регион Шумадије и Западне Србије', 
     'Регион Јужне и Источне Србије' 
-}
-
-# REGION: Literal[
-#     'РЕПУБЛИКА СРБИЈА' | 
-#     'Београдски регион' | 
-#     'Регион Војводине' | 
-#     'Регион Шумадије и Западне Србије' | 
-#     'Регион Јужне и Источне Србије'
-# ] = 'РЕПУБЛИКА СРБИЈА'
+)
