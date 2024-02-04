@@ -8,9 +8,9 @@ from constants import (
 
 
 
-def get_dataset() -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_dataset(path: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     
-    dataset = pd.read_csv(DATA_FILE, usecols=COLS, index_col=INDEX_COLS)
+    dataset = pd.read_csv(path, usecols=COLS, index_col=INDEX_COLS)
     
     mask = dataset.index.get_level_values('Region') == 'РЕПУБЛИКА СРБИЈА'
     serbia = dataset[mask].droplevel('Region')
@@ -26,7 +26,7 @@ def get_dataset() -> Tuple[pd.DataFrame, pd.DataFrame]:
 
 if __name__ == "__main__":
     # quick demo
-    regions_df, serbia_df = get_dataset()
+    regions_df, serbia_df = get_dataset(DATA_FILE)
 
     if "serbia df demo":
         print(serbia_df.head(), serbia_df.index) # data frame containing data for every year as index for Serbia
